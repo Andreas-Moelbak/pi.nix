@@ -246,3 +246,9 @@ nix build .#docs-html
 
 The outputs are available at `result/index.md` and `result/index.html`,
 respectively.
+
+## Maintenance
+
+Temporary upstream workarounds live in `patch.nix`. The updater applies them
+before regenerating the npm and Bun lockfiles; package builds use the committed
+lockfiles without network access. Remove each workaround when upstream fixes it.

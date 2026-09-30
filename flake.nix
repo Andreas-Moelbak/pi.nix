@@ -85,8 +85,10 @@
             inherit rev hash;
           };
 
-          syncUpstream = import ./sync-upstream.nix {
-            inherit pkgs;
+          patch = import ./patch.nix { inherit pkgs; };
+
+          sync = import ./sync.nix {
+            inherit pkgs patch;
             bun2nix = (bun2nixFor system).packages.${system}.bun2nix;
           };
 
@@ -95,7 +97,7 @@
           };
 
           update = import ./update.nix {
-            inherit pkgs regenerateModels syncUpstream;
+            inherit pkgs regenerateModels sync;
           };
 
           scan = import ./scan.nix { inherit pkgs; };
@@ -151,9 +153,9 @@
               program = "${update}/bin/pi-update";
               meta.description = "Update pi and regenerate its model data";
             };
-            sync-upstream = {
+            sync = {
               type = "app";
-              program = "${syncUpstream}/bin/pi-sync-upstream";
+              program = "${sync}/bin/pi-sync";
               meta.description = "Update pi's upstream lockfiles and version metadata";
             };
             regenerate-models = {
